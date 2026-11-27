@@ -117,7 +117,7 @@
   .guestform-thanks button:hover { background:#333 }
   .guestform-lock-card[hidden],.guestform-unlocked-content[hidden] { display:none }
   .sidequest-guestform-route { display:none }
-  .releases-page h2 { flex:0 0 auto; margin:0 0 22px; padding:8px 0; background:#fff; font-size:clamp(2rem,4vw,3.5rem); line-height:.95; letter-spacing:-.06em }
+  .releases-page h2 { flex:0 0 auto; margin:0 0 22px; padding:8px 0; background:transparent; font-size:clamp(2rem,4vw,3.5rem); line-height:.95; letter-spacing:-.06em }
   .release-list { min-height:0; flex:1 1 auto; overflow-y:auto; overflow-x:hidden; scrollbar-gutter:stable; margin:0; padding:0; list-style:none; display:grid; align-content:start; grid-auto-rows:max-content; gap:16px }
   .release-card { width:100%; align-self:start }
   .release-toggle { position:relative; isolation:isolate; overflow:hidden; width:100%; height:88px; min-height:88px; flex-wrap:nowrap; padding:18px 24px; display:flex; align-items:center; gap:14px; border:1px solid rgba(17,17,17,.14); border-radius:20px; background:#fff; color:#111; text-align:left; cursor:pointer; box-shadow:0 10px 28px rgba(0,0,0,.1) }
@@ -287,7 +287,8 @@
     .for-you-streaming { top:auto; right:0; bottom:12px; left:0; display:flex; justify-content:center; gap:14px; transform:translateY(12px) }
     body.for-you-screen .for-you-streaming { transform:translateY(0) }
     .events-page { top:48%; left:5vw; width:90vw; max-height:76vh; overflow:auto; padding:16px; border-radius:16px; background:rgba(0,0,0,.28); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px) }
-    .sidequest-poster { top:auto; right:5vw; bottom:12px; left:auto; width:min(36vw,190px); max-height:34vh; transform:translateY(12px) scale(.98) }
+    .sidequest-poster { top:auto; right:auto; bottom:calc(clamp(56px,9vh,88px) - 13px); left:50%; width:min(45.6vw,192px); max-height:28.8vh; transform:translate(-50%,12px) scale(.98) }
+    body.events-screen.sidequest-expanded .sidequest-poster { transform:translate(-50%,0) scale(1) }
     body.events-screen.sidequest-expanded .events-page { max-height:55vh }
     .sidequest-guestform-page { width:94vw; max-height:84dvh; padding:4px }
     .guestform-lock-card,.guestform-unlocked-content { gap:16px; padding:22px 18px }
@@ -4372,9 +4373,11 @@ function modelXAtProgress(progress){
   return (screenX-innerWidth/2)/pixelsPerWorld;
 }
 function modelYForCurrentPage(mobile){
-  if(document.body.classList.contains('white-screen')){
+  if((document.body.classList.contains('white-screen')||socialsMotionActive)&&mobile){
     const pixelsPerWorld=innerHeight*camera.zoom/(2*camera.position.z*Math.tan(camera.fov*Math.PI/360));
-    return innerHeight/(6*pixelsPerWorld);
+    const topThirdY=innerHeight/(6*pixelsPerWorld);
+    const progress=Math.max(0,Math.min(1,leftProgress));
+    return -.2+(topThirdY+.2)*progress;
   }
   return mobile?(forYouMotionActive?0:-.2):0;
 }
@@ -4439,7 +4442,7 @@ function frame(){
     group.position.set(modelXAtProgress(leftProgress),modelYForCurrentPage(mobile),0);
     const epMobile=document.body.classList.contains('white-screen')&&mobile;
     group.scale.setScalar((epMobile?0.58:(mobile ? 0.9 : 1.0))*(forYouMotionActive ? 1-0.5515*leftProgress : (eventsMotionActive ? 1+0.12*leftProgress : 1)));
-    if(leftTarget===0&&leftProgress===0){socialsMotionActive=false;forYouMotionActive=false;eventsMotionActive=false;}
+    if(leftTarget===0&&leftProgress===0){socialsMotionActive=false;forYouMotionActive=false;eventsMotionActive=false;group.position.set(modelXAtProgress(0),modelYForCurrentPage(mobile),0);}
   }
   renderer.render(scene,camera);
 }
@@ -4708,7 +4711,7 @@ document.querySelector('.socials-button').addEventListener('click',()=>{
   leftStartProgress=leftProgress;
   leftElapsed=0;
   leftTarget=1;
-  if(paused){leftProgress=1;camera.zoom=8.1*3.2;camera.updateProjectionMatrix();group.position.x=modelXAtProgress(leftProgress);}
+  if(paused){leftProgress=1;camera.zoom=8.1*3.2;camera.updateProjectionMatrix();group.position.set(modelXAtProgress(leftProgress),modelYForCurrentPage(innerWidth/innerHeight<.8),0);}
 });
 document.querySelector('.brand-logo').addEventListener('click',event=>{
   if(document.body.classList.contains('sidequest-guestform-screen'))return;
