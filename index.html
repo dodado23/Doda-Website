@@ -266,12 +266,12 @@
   .home-info p { max-width:none; margin:0; font-size:clamp(16px,2vw,22px) }
   @media(max-width:650px) { .copy { width:70vw; justify-content:flex-start; padding-top:15vh } }
   @media(max-width:650px) { .track-list { right:16px; width:min(42vw,200px); gap:8px } .track-list button { min-height:42px; padding:9px 11px; font-size:12px } }
-  @media(max-width:650px) { .releases-page { width:94vw; height:80vh; max-height:80vh; padding:4px } .release-toggle { height:76px; min-height:76px; padding:15px 18px; flex-wrap:nowrap; gap:4px 10px; border-radius:18px } .release-title { font-size:19px } .release-artists { font-size:13px } .release-panel-inner { grid-template-columns:1fr; justify-items:center; gap:18px } .release-artwork { width:min(72vw,340px); max-height:38vh } .release-details { justify-items:center; text-align:center; padding-bottom:12px } }
+  @media(max-width:650px) { .releases-page { width:94vw; height:80vh; max-height:80vh; padding:56px 4px 4px } .release-toggle { height:76px; min-height:76px; padding:15px 18px; flex-wrap:nowrap; gap:4px 10px; border-radius:18px } .release-title { font-size:19px } .release-artists { font-size:13px } .release-panel-inner { grid-template-columns:1fr; justify-items:center; gap:18px } .release-artwork { width:min(72vw,340px); max-height:38vh } .release-details { justify-items:center; text-align:center; padding-bottom:12px } }
   @media(max-width:650px) {
     .for-you-artwork { z-index:5 }
     .model-copy-stage { z-index:4 }
     body.for-you-screen .model-copy-stage { z-index:6 }
-    body.white-screen .track-list { z-index:7 }
+    body.white-screen .track-list { z-index:7; top:auto; right:14px; bottom:14px; left:auto; width:min(42vw,200px); max-height:42vh; overflow:auto; transform:none; padding:12px; border-radius:16px; background:rgba(255,255,255,.94); box-shadow:0 8px 32px rgba(0,0,0,.12) }
     .site-audio-toggle { top:12px; right:12px; width:52px; height:52px; padding:11px }
     .copy { width:min(84vw,440px); padding-top:14vh }
     .copy h1 { max-width:7ch; font-size:clamp(2.8rem,15vw,5rem) }
@@ -4389,7 +4389,8 @@ function layout(){
   const basePixelsPerWorld=h*8.1/(2*camera.position.z*Math.tan(camera.fov*Math.PI/360));
   groupBaseX=(viewportModelStartX-w/2)/basePixelsPerWorld;
   group.position.set(modelXAtProgress(leftProgress),modelYForCurrentPage(mobile),0);
-  group.scale.setScalar((mobile ? 0.9 : 1.0)*(forYouMotionActive ? 1-0.5515*leftProgress : (eventsMotionActive ? 1+0.12*leftProgress : 1)));
+  const epMobile=document.body.classList.contains('white-screen')&&mobile;
+  group.scale.setScalar((epMobile?0.58:(mobile ? 0.9 : 1.0))*(forYouMotionActive ? 1-0.5515*leftProgress : (eventsMotionActive ? 1+0.12*leftProgress : 1)));
 }
 addEventListener('resize',layout);layout();
 function frame(){
@@ -4436,7 +4437,8 @@ function frame(){
     if(Math.abs(camera.zoom-targetZoom)>0.0001){camera.zoom=targetZoom;camera.updateProjectionMatrix();}
     const mobile=innerWidth/innerHeight<.8;
     group.position.set(modelXAtProgress(leftProgress),modelYForCurrentPage(mobile),0);
-    group.scale.setScalar((mobile ? 0.9 : 1.0)*(forYouMotionActive ? 1-0.5515*leftProgress : (eventsMotionActive ? 1+0.12*leftProgress : 1)));
+    const epMobile=document.body.classList.contains('white-screen')&&mobile;
+    group.scale.setScalar((epMobile?0.58:(mobile ? 0.9 : 1.0))*(forYouMotionActive ? 1-0.5515*leftProgress : (eventsMotionActive ? 1+0.12*leftProgress : 1)));
     if(leftTarget===0&&leftProgress===0){socialsMotionActive=false;forYouMotionActive=false;eventsMotionActive=false;}
   }
   renderer.render(scene,camera);
@@ -4632,7 +4634,7 @@ document.querySelector('.ep-button').addEventListener('click',()=>{
   leftStartProgress=leftProgress;
   leftElapsed=0;
   leftTarget=1;
-  if(paused){leftProgress=1;camera.zoom=8.1*1.6;camera.updateProjectionMatrix();group.position.set(modelXAtProgress(leftProgress),modelYForCurrentPage(innerWidth/innerHeight<.8),0);}
+  if(paused){leftProgress=1;camera.zoom=8.1*1.6;camera.updateProjectionMatrix();group.position.set(modelXAtProgress(leftProgress),modelYForCurrentPage(innerWidth/innerHeight<.8),0);group.scale.setScalar(innerWidth/innerHeight<.8?0.58:1);}
   clearTimeout(trackListRevealTimer);
   trackList.inert=true;
   trackListRevealTimer=setTimeout(()=>{
