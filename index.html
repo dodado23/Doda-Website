@@ -4620,7 +4620,7 @@ siteAudioToggle.addEventListener('click',()=>{
 });
 document.addEventListener('click',event=>{
   if(event.target.closest('.track-list'))return;
-  if(!event.target.closest('.brand-logo, .social-links .social-link, .track-list button, .track-links a, .for-you-streaming a, .event-ticket, .guest-signup-form button[type="submit"], #guestform-submit-more'))return;
+  if(!event.target.closest('.brand-logo, .social-links .social-link, .track-list button, .track-links a, .for-you-streaming a, .event-ticket, .guestform-password-form button[type="submit"], .guest-signup-form button[type="submit"], #guestform-submit-more'))return;
   interfaceClickAudio.pause();
   interfaceClickAudio.currentTime=0;
   interfaceClickAudio.play().catch(error=>console.warn('Interface click sound could not start:',error));
