@@ -79,7 +79,7 @@
   body.events-screen .brand-logo:hover .logo-dark { opacity:0 }
   body.events-screen .brand-logo .logo-light,
   body.events-screen .brand-logo:hover .logo-light { opacity:1 }
-  .releases-page { position:fixed; z-index:7; top:50%; left:50%; width:min(820px,86vw); height:82vh; max-height:82vh; overflow:auto; overflow-x:hidden; scrollbar-gutter:stable; padding:8px; color:#111; opacity:0; pointer-events:none; transform:translate(-50%,calc(-50% + 16px)); transition:opacity .6s ease,transform .6s ease }
+  .releases-page { position:fixed; z-index:7; top:50%; left:50%; width:min(820px,86vw); height:82vh; max-height:82vh; display:flex; flex-direction:column; overflow:hidden; padding:8px; color:#111; opacity:0; pointer-events:none; transform:translate(-50%,calc(-50% + 16px)); transition:opacity .6s ease,transform .6s ease }
   body.releases-screen .releases-page { opacity:1; pointer-events:auto; transform:translate(-50%,-50%) }
   .sidequest-guestform-page { position:fixed; z-index:7; top:50%; left:50%; width:min(560px,88vw); max-height:82vh; overflow:auto; padding:8px; color:#111; opacity:0; visibility:hidden; pointer-events:none; transform:translate(-50%,calc(-50% + 16px)); transition:opacity .6s ease,transform .6s ease,visibility .6s ease }
   body.sidequest-guestform-screen .sidequest-guestform-page { opacity:1; visibility:visible; pointer-events:auto; transform:translate(-50%,-50%) }
@@ -117,8 +117,8 @@
   .guestform-thanks button:hover { background:#333 }
   .guestform-lock-card[hidden],.guestform-unlocked-content[hidden] { display:none }
   .sidequest-guestform-route { display:none }
-  .releases-page h2 { position:sticky; top:-8px; z-index:2; margin:0 0 22px; padding:8px 0; background:#fff; font-size:clamp(2rem,4vw,3.5rem); line-height:.95; letter-spacing:-.06em }
-  .release-list { margin:0; padding:0; list-style:none; display:grid; align-content:start; grid-auto-rows:max-content; gap:16px }
+  .releases-page h2 { flex:0 0 auto; margin:0 0 22px; padding:8px 0; background:#fff; font-size:clamp(2rem,4vw,3.5rem); line-height:.95; letter-spacing:-.06em }
+  .release-list { min-height:0; flex:1 1 auto; overflow-y:auto; overflow-x:hidden; scrollbar-gutter:stable; margin:0; padding:0; list-style:none; display:grid; align-content:start; grid-auto-rows:max-content; gap:16px }
   .release-card { width:100%; align-self:start }
   .release-toggle { position:relative; isolation:isolate; overflow:hidden; width:100%; height:88px; min-height:88px; flex-wrap:nowrap; padding:18px 24px; display:flex; align-items:center; gap:14px; border:1px solid rgba(17,17,17,.14); border-radius:20px; background:#fff; color:#111; text-align:left; cursor:pointer; box-shadow:0 10px 28px rgba(0,0,0,.1) }
   .release-toggle::before,.release-toggle::after { position:absolute; inset:0; content:""; z-index:-1; pointer-events:none }
@@ -269,7 +269,9 @@
   @media(max-width:650px) { .releases-page { width:94vw; height:80vh; max-height:80vh; padding:4px } .release-toggle { height:76px; min-height:76px; padding:15px 18px; flex-wrap:nowrap; gap:4px 10px; border-radius:18px } .release-title { font-size:19px } .release-artists { font-size:13px } .release-panel-inner { grid-template-columns:1fr; justify-items:center; gap:18px } .release-artwork { width:min(72vw,340px); max-height:38vh } .release-details { justify-items:center; text-align:center; padding-bottom:12px } }
   @media(max-width:650px) {
     .for-you-artwork { z-index:5 }
-    .model-copy-stage { z-index:6 }
+    .model-copy-stage { z-index:4 }
+    body.for-you-screen .model-copy-stage { z-index:6 }
+    body.white-screen .track-list { z-index:7 }
     .site-audio-toggle { top:12px; right:12px; width:52px; height:52px; padding:11px }
     .copy { width:min(84vw,440px); padding-top:14vh }
     .copy h1 { max-width:7ch; font-size:clamp(2.8rem,15vw,5rem) }
@@ -4364,7 +4366,8 @@ let groupBaseX=0,viewportModelStartX=0,leftProgress=0,leftTarget=0,leftStartProg
 function modelXAtProgress(progress){
   const pixelsPerWorld=innerHeight*camera.zoom/(2*camera.position.z*Math.tan(camera.fov*Math.PI/360));
   const trackListX=Math.max(-innerWidth*0.25+200,innerWidth*0.28-3300);
-  const targetX=(forYouMotionActive||eventsMotionActive)?innerWidth*0.5:(socialsMotionActive?innerWidth*0.5-100:trackListX);
+  const epMobile=document.body.classList.contains('white-screen')&&innerWidth/innerHeight<.8;
+  const targetX=epMobile?innerWidth*.30:((forYouMotionActive||eventsMotionActive)?innerWidth*0.5:(socialsMotionActive?innerWidth*0.5-100:trackListX));
   const screenX=viewportModelStartX+(targetX-viewportModelStartX)*progress;
   return (screenX-innerWidth/2)/pixelsPerWorld;
 }
