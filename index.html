@@ -79,7 +79,7 @@
   body.events-screen .brand-logo:hover .logo-dark { opacity:0 }
   body.events-screen .brand-logo .logo-light,
   body.events-screen .brand-logo:hover .logo-light { opacity:1 }
-  .releases-page { position:fixed; z-index:7; top:50%; left:50%; width:min(820px,86vw); max-height:82vh; overflow:auto; overflow-x:hidden; scrollbar-gutter:stable; padding:8px; color:#111; opacity:0; pointer-events:none; transform:translate(-50%,calc(-50% + 16px)); transition:opacity .6s ease,transform .6s ease }
+  .releases-page { position:fixed; z-index:7; top:50%; left:50%; width:min(820px,86vw); height:82vh; max-height:82vh; overflow:auto; overflow-x:hidden; scrollbar-gutter:stable; padding:8px; color:#111; opacity:0; pointer-events:none; transform:translate(-50%,calc(-50% + 16px)); transition:opacity .6s ease,transform .6s ease }
   body.releases-screen .releases-page { opacity:1; pointer-events:auto; transform:translate(-50%,-50%) }
   .sidequest-guestform-page { position:fixed; z-index:7; top:50%; left:50%; width:min(560px,88vw); max-height:82vh; overflow:auto; padding:8px; color:#111; opacity:0; visibility:hidden; pointer-events:none; transform:translate(-50%,calc(-50% + 16px)); transition:opacity .6s ease,transform .6s ease,visibility .6s ease }
   body.sidequest-guestform-screen .sidequest-guestform-page { opacity:1; visibility:visible; pointer-events:auto; transform:translate(-50%,-50%) }
@@ -117,7 +117,7 @@
   .guestform-thanks button:hover { background:#333 }
   .guestform-lock-card[hidden],.guestform-unlocked-content[hidden] { display:none }
   .sidequest-guestform-route { display:none }
-  .releases-page h2 { margin:0 0 22px; font-size:clamp(2rem,4vw,3.5rem); line-height:.95; letter-spacing:-.06em }
+  .releases-page h2 { position:sticky; top:-8px; z-index:2; margin:0 0 22px; padding:8px 0; background:#fff; font-size:clamp(2rem,4vw,3.5rem); line-height:.95; letter-spacing:-.06em }
   .release-list { margin:0; padding:0; list-style:none; display:grid; align-content:start; grid-auto-rows:max-content; gap:16px }
   .release-card { width:100%; align-self:start }
   .release-toggle { position:relative; isolation:isolate; overflow:hidden; width:100%; height:88px; min-height:88px; flex-wrap:nowrap; padding:18px 24px; display:flex; align-items:center; gap:14px; border:1px solid rgba(17,17,17,.14); border-radius:20px; background:#fff; color:#111; text-align:left; cursor:pointer; box-shadow:0 10px 28px rgba(0,0,0,.1) }
@@ -266,7 +266,7 @@
   .home-info p { max-width:none; margin:0; font-size:clamp(16px,2vw,22px) }
   @media(max-width:650px) { .copy { width:70vw; justify-content:flex-start; padding-top:15vh } }
   @media(max-width:650px) { .track-list { right:16px; width:min(42vw,200px); gap:8px } .track-list button { min-height:42px; padding:9px 11px; font-size:12px } }
-  @media(max-width:650px) { .releases-page { width:94vw; max-height:80vh; padding:4px } .release-toggle { height:76px; min-height:76px; padding:15px 18px; flex-wrap:nowrap; gap:4px 10px; border-radius:18px } .release-title { font-size:19px } .release-artists { font-size:13px } .release-panel-inner { grid-template-columns:1fr; justify-items:center; gap:18px } .release-artwork { width:min(72vw,340px); max-height:38vh } .release-details { justify-items:center; text-align:center; padding-bottom:12px } }
+  @media(max-width:650px) { .releases-page { width:94vw; height:80vh; max-height:80vh; padding:4px } .release-toggle { height:76px; min-height:76px; padding:15px 18px; flex-wrap:nowrap; gap:4px 10px; border-radius:18px } .release-title { font-size:19px } .release-artists { font-size:13px } .release-panel-inner { grid-template-columns:1fr; justify-items:center; gap:18px } .release-artwork { width:min(72vw,340px); max-height:38vh } .release-details { justify-items:center; text-align:center; padding-bottom:12px } }
   @media(max-width:650px) {
     .for-you-artwork { z-index:5 }
     .model-copy-stage { z-index:6 }
@@ -4368,6 +4368,13 @@ function modelXAtProgress(progress){
   const screenX=viewportModelStartX+(targetX-viewportModelStartX)*progress;
   return (screenX-innerWidth/2)/pixelsPerWorld;
 }
+function modelYForCurrentPage(mobile){
+  if(document.body.classList.contains('white-screen')){
+    const pixelsPerWorld=innerHeight*camera.zoom/(2*camera.position.z*Math.tan(camera.fov*Math.PI/360));
+    return innerHeight/(6*pixelsPerWorld);
+  }
+  return mobile?(forYouMotionActive?0:-.2):0;
+}
 function layout(){
   const w=innerWidth,h=innerHeight,aspect=w/h;
   renderer.setSize(w,h);camera.aspect=aspect;camera.updateProjectionMatrix();
@@ -4378,7 +4385,7 @@ function layout(){
   viewportModelStartX=w*0.70;
   const basePixelsPerWorld=h*8.1/(2*camera.position.z*Math.tan(camera.fov*Math.PI/360));
   groupBaseX=(viewportModelStartX-w/2)/basePixelsPerWorld;
-  group.position.set(modelXAtProgress(leftProgress),mobile?(forYouMotionActive?0:-.2):0,0);
+  group.position.set(modelXAtProgress(leftProgress),modelYForCurrentPage(mobile),0);
   group.scale.setScalar((mobile ? 0.9 : 1.0)*(forYouMotionActive ? 1-0.5515*leftProgress : (eventsMotionActive ? 1+0.12*leftProgress : 1)));
 }
 addEventListener('resize',layout);layout();
@@ -4425,7 +4432,7 @@ function frame(){
     const targetZoom=8.1*(1+(socialsMotionActive?2.2:(eventsMotionActive?0.8:(forYouMotionActive?0:0.6)))*leftProgress);
     if(Math.abs(camera.zoom-targetZoom)>0.0001){camera.zoom=targetZoom;camera.updateProjectionMatrix();}
     const mobile=innerWidth/innerHeight<.8;
-    group.position.set(modelXAtProgress(leftProgress),mobile?(forYouMotionActive?0:-.2):0,0);
+    group.position.set(modelXAtProgress(leftProgress),modelYForCurrentPage(mobile),0);
     group.scale.setScalar((mobile ? 0.9 : 1.0)*(forYouMotionActive ? 1-0.5515*leftProgress : (eventsMotionActive ? 1+0.12*leftProgress : 1)));
     if(leftTarget===0&&leftProgress===0){socialsMotionActive=false;forYouMotionActive=false;eventsMotionActive=false;}
   }
@@ -4622,7 +4629,7 @@ document.querySelector('.ep-button').addEventListener('click',()=>{
   leftStartProgress=leftProgress;
   leftElapsed=0;
   leftTarget=1;
-  if(paused){leftProgress=1;camera.zoom=8.1*1.6;camera.updateProjectionMatrix();group.position.x=modelXAtProgress(leftProgress);}
+  if(paused){leftProgress=1;camera.zoom=8.1*1.6;camera.updateProjectionMatrix();group.position.set(modelXAtProgress(leftProgress),modelYForCurrentPage(innerWidth/innerHeight<.8),0);}
   clearTimeout(trackListRevealTimer);
   trackList.inert=true;
   trackListRevealTimer=setTimeout(()=>{
