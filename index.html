@@ -4603,7 +4603,7 @@ const siteAudioToggle=document.querySelector('.site-audio-toggle');
 let siteAudioMuted=false;
 try{siteAudioMuted=localStorage.getItem('doda-site-audio-muted')==='true';}catch{}
 function applySiteAudioMute(){
-  document.querySelectorAll('audio').forEach(audio=>audio.muted=siteAudioMuted);
+  document.querySelectorAll('audio:not(#interface-click-audio):not(#home-button-audio)').forEach(audio=>audio.muted=siteAudioMuted);
   siteAudioToggle.classList.toggle('is-muted',siteAudioMuted);
   siteAudioToggle.setAttribute('aria-pressed',String(siteAudioMuted));
   siteAudioToggle.setAttribute('aria-label',siteAudioMuted?'Unmute site audio':'Mute site audio');
@@ -4618,12 +4618,15 @@ siteAudioToggle.addEventListener('click',()=>{
     forYouAudio.play().catch(error=>console.warn('For You audio could not start:',error));
   }
 });
-document.addEventListener('click',event=>{
-  if(event.target.closest('.track-list'))return;
-  if(!event.target.closest('.brand-logo, .social-links .social-link, .track-list button, .track-links a, .for-you-streaming a, .event-ticket, .guestform-password-form button[type="submit"], .guest-signup-form button[type="submit"], #guestform-submit-more'))return;
+function playInterfaceClickSound(){
   interfaceClickAudio.pause();
   interfaceClickAudio.currentTime=0;
   interfaceClickAudio.play().catch(error=>console.warn('Interface click sound could not start:',error));
+}
+document.addEventListener('click',event=>{
+  if(event.target.closest('.track-list'))return;
+  if(!event.target.closest('.brand-logo, .social-links .social-link, .track-list button, .track-links a, .for-you-streaming a, .event-ticket, .guest-signup-form button[type="submit"], #guestform-submit-more'))return;
+  playInterfaceClickSound();
 },true);
 const homeButtonAudio=document.querySelector('#home-button-audio');
 homeButtonAudio.volume=0.56;
@@ -4912,6 +4915,7 @@ sidequestGuestRouteButton.addEventListener('click',()=>{
 });
 sidequestGuestPasswordForm.addEventListener('submit',async event=>{
   event.preventDefault();
+  playInterfaceClickSound();
   sidequestGuestPasswordError.textContent='';
   forYouAudio.play().catch(error=>console.warn('For You audio could not start:',error));
   try{
