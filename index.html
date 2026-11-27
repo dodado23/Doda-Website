@@ -93,6 +93,7 @@
   .guestform-unlocked-content { display:grid; gap:22px; padding:clamp(24px,5vw,42px); border:1px solid rgba(17,17,17,.16); border-radius:20px; background:rgba(255,255,255,.82); box-shadow:0 12px 40px rgba(0,0,0,.1); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px) }
   .guestform-unlocked-content h1 { text-align:center }
   .guest-signup-form { width:100%; display:grid; gap:14px }
+  .guest-signup-form[hidden] { display:none }
   .guest-signup-form > label { display:grid; gap:6px; color:#333; font-size:14px; text-align:left }
   .guest-signup-form input,.guest-signup-form select,.guest-signup-form textarea { width:100%; padding:12px 14px; border:1px solid rgba(17,17,17,.28); border-radius:10px; background:#fff; color:#111; font:inherit }
   .guest-signup-form input:focus-visible,.guest-signup-form select:focus-visible,.guest-signup-form textarea:focus-visible { outline:2px solid #111; outline-offset:3px }
@@ -105,6 +106,12 @@
   .guest-signup-form button { justify-self:center; margin-top:5px; padding:12px 25px; border:1px solid #111; border-radius:10px; background:#111; color:#fff; font:inherit; cursor:pointer }
   .guest-signup-form button:hover { background:#333 }
   .guest-signup-status { min-height:1.4em; margin:0; color:#333; text-align:center }
+  .guestform-thanks { position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:24px; background:rgba(0,0,0,.38); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); text-align:center }
+  .guestform-thanks[hidden] { display:none }
+  .guestform-thanks-card { width:min(520px,100%); display:grid; justify-items:center; gap:18px; padding:clamp(26px,5vw,44px); border:1px solid rgba(17,17,17,.16); border-radius:20px; background:rgba(255,255,255,.96); box-shadow:0 20px 60px rgba(0,0,0,.2) }
+  .guestform-thanks p { margin:0; color:#333; font-size:clamp(1.05rem,2.5vw,1.3rem); line-height:1.45 }
+  .guestform-thanks button { padding:12px 22px; border:1px solid #111; border-radius:10px; background:#111; color:#fff; font:inherit; cursor:pointer }
+  .guestform-thanks button:hover { background:#333 }
   .guestform-lock-card[hidden],.guestform-unlocked-content[hidden] { display:none }
   .sidequest-guestform-route { display:none }
   .releases-page h2 { margin:0 0 22px; font-size:clamp(2rem,4vw,3.5rem); line-height:.95; letter-spacing:-.06em }
@@ -583,6 +590,13 @@ document.querySelectorAll('#home-page-audio, #home-page-audio-secondary').forEac
     </form>
   </div>
 </section>
+<div class="guestform-thanks" id="guestform-thanks" role="dialog" aria-modal="true" aria-labelledby="guestform-thanks-title" hidden>
+  <div class="guestform-thanks-card">
+    <h1 id="guestform-thanks-title">Thanks for submitting!</h1>
+    <p>Feel free to submit more guests at any time.</p>
+    <button type="button" id="guestform-submit-more">Submit more guests</button>
+  </div>
+</div>
 <div class="crazy-fanart-overlay" aria-hidden="true">
   <div class="crazy-fanart-dialog" role="dialog" aria-modal="true" aria-label="Wanna Go Crazy fan art">
     <button class="crazy-fanart-close" type="button" aria-label="Close fan art">×</button>
@@ -4815,6 +4829,8 @@ const sidequestGuestPasswordInput=document.querySelector('#guestform-password-in
 const sidequestGuestPasswordError=document.querySelector('#guestform-password-error');
 const guestSignupForm=document.querySelector('#guest-signup-form');
 const guestSignupStatus=document.querySelector('#guest-signup-status');
+const guestformThanks=document.querySelector('#guestform-thanks');
+const guestformSubmitMore=document.querySelector('#guestform-submit-more');
 const guestSignupEndpoint='https://script.google.com/macros/s/AKfycbycy3_NOlryJvCaDCqcsIP2A-fky79IbywNG7SPR_U0jf3hXcouvSGxiVj_JhCfOys9/exec';
 const sidequestGuestPasswordHash='5fe42d64fe53e1fadecc6a868f260640de07bf1276462cfc147e5f542989a8fb';
 function syncSidequestGuestAccess(){
@@ -4858,6 +4874,11 @@ sidequestGuestPasswordForm.addEventListener('submit',async event=>{
     sidequestGuestPasswordError.textContent='Password check unavailable in this browser.';
   }
 });
+guestformSubmitMore.addEventListener('click',()=>{
+  guestformThanks.hidden=true;
+  guestSignupForm.hidden=false;
+  guestSignupForm.querySelector('select').focus();
+});
 guestSignupForm.addEventListener('submit',event=>{
   event.preventDefault();
   const submission=new FormData(guestSignupForm);
@@ -4876,7 +4897,9 @@ guestSignupForm.addEventListener('submit',event=>{
   fetch(guestSignupEndpoint,{method:'POST',mode:'no-cors',body:new URLSearchParams(submission)})
     .then(()=>{
       guestSignupForm.reset();
-      guestSignupStatus.textContent='Thanks — your signup has been sent.';
+      guestSignupForm.hidden=true;
+      guestformThanks.hidden=false;
+      guestformSubmitMore.focus();
     })
     .catch(()=>{guestSignupStatus.textContent='Could not send your signup. Please try again.';})
     .finally(()=>{submitButton.disabled=false;});
