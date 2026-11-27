@@ -4981,7 +4981,9 @@ let homePageAudioLoopTimer=0;
 let homePageAudioCrossfadeFrame=0;
 let homePageAudioCrossfading=false;
 let homePageAudioFirstBoot=true;
-homePageAudioDecks.forEach(audio=>{audio.loop=false;audio.volume=0;});
+// Keep native looping enabled as a background-tab fallback: throttled timers
+// can miss the custom crossfade window when the browser is not focused.
+homePageAudioDecks.forEach(audio=>{audio.loop=true;audio.volume=0;});
 function applyHomePageAudioMix(){
   homePageAudioDecks.forEach((audio,index)=>audio.volume=homePageAudioMasterVolume*homePageAudioMix[index]);
 }
@@ -5051,6 +5053,7 @@ function startHomePageAudioLoopMonitor(){
         current.currentTime=0;
         homePageAudioMix[homePageAudioActiveDeck]=0;
         homePageAudioMix[nextIndex]=1;
+        next.loop=true;
         homePageAudioActiveDeck=nextIndex;
         homePageAudioCrossfading=false;
         homePageAudioCrossfadeFrame=0;
@@ -5084,7 +5087,7 @@ function syncHomePageAudio(){
     homePageAudioMasterVolume=0;
     applyHomePageAudioMix();
     homePageAudioStarting=true;
-    homePageAudioDecks.forEach((audio,index)=>{audio.loop=false;if(index!==homePageAudioActiveDeck){audio.pause();audio.currentTime=0;}});
+    homePageAudioDecks.forEach((audio,index)=>{audio.loop=true;if(index!==homePageAudioActiveDeck){audio.pause();audio.currentTime=0;}});
     homePageAudioDecks[homePageAudioActiveDeck].play().then(()=>{
       homePageAudioStarting=false;
       if(generation!==homePageAudioGeneration||!homePageAudioWanted){homePageAudioDecks[homePageAudioActiveDeck].pause();return;}
@@ -5101,7 +5104,13 @@ window.addEventListener('pointerdown',syncHomePageAudio,{passive:true});
 window.addEventListener('keydown',syncHomePageAudio);
 homePageAudio.addEventListener('canplay',syncHomePageAudio);
 window.addEventListener('pageshow',syncHomePageAudio);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)syncHomePageAudio();});
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){
+    homePageAudioDecks.forEach(audio=>audio.loop=true);
+    return;
+  }
+  syncHomePageAudio();
+});
 syncHomePageAudio();
 
 </script>
