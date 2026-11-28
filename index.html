@@ -4744,6 +4744,7 @@ document.querySelector('.home-for-you-button').addEventListener('click',()=>{
   socialsMotionActive=false;
   forYouMotionActive=true;
   document.body.classList.add('for-you-screen');
+  setForYouWireframe(true);
   requestAnimationFrame(waitForForYouModel);
   leftStartProgress=leftProgress;
   leftElapsed=0;
