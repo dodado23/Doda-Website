@@ -40,6 +40,10 @@
   .for-you-page-background { position:fixed; inset:0; z-index:3; background:url("for-you-page-background.png") center center / cover no-repeat; opacity:0; pointer-events:none; transition:opacity .9s ease }
   body.for-you-screen .for-you-page-background { opacity:1 }
   body.for-you-screen .copy { opacity:0 }
+  .for-you-title { position:fixed; z-index:8; top:clamp(24px,5vh,48px); left:50%; margin:0; color:rgba(236,248,255,.42); background:linear-gradient(145deg,rgba(255,255,255,.52),rgba(224,243,255,.28) 52%,rgba(255,255,255,.46)); background-clip:text; -webkit-background-clip:text; -webkit-text-stroke:1.4px rgba(255,255,255,.96); filter:drop-shadow(0 1px 4px rgba(255,255,255,.18)); font-size:clamp(2.4rem,5vw,4rem); line-height:.95; letter-spacing:-.06em; opacity:0; pointer-events:none; transform:translate(-50%,-8px); transition:opacity .25s ease,transform .25s ease }
+  body.for-you-screen .for-you-title { opacity:1; transform:translate(-50%,0); transition:opacity 5s ease,transform 5s ease }
+  .for-you-subtitle { position:fixed; z-index:8; top:calc(clamp(24px,5vh,48px) + clamp(2.4rem,5vw,4rem) + 10px); left:50%; margin:0; color:rgba(236,248,255,.48); background:linear-gradient(145deg,rgba(255,255,255,.58),rgba(224,243,255,.34) 52%,rgba(255,255,255,.5)); background-clip:text; -webkit-background-clip:text; -webkit-text-stroke:.7px rgba(255,255,255,.9); filter:drop-shadow(0 1px 4px rgba(255,255,255,.15)); font-size:clamp(1rem,2vw,1.4rem); line-height:1; letter-spacing:.01em; opacity:0; pointer-events:none; transform:translate(-50%,-6px); transition:opacity .25s ease,transform .25s ease }
+  body.for-you-screen .for-you-subtitle { opacity:1; transform:translate(-50%,0); transition:opacity 5s ease,transform 5s ease }
   .for-you-artwork { position:fixed; z-index:3; top:50%; left:50%; width:min(44.2vw,546px); max-height:100vh; aspect-ratio:1; object-fit:contain; opacity:0; pointer-events:none; transform:translate(-50%,-50%); transition:opacity 3s ease }
   body.for-you-screen.for-you-artwork-visible .for-you-artwork { opacity:1 }
   body:not(.for-you-screen) .for-you-artwork { transition-duration:.3s }
@@ -243,6 +247,7 @@
   .for-you-streaming img { width:100%; height:100%; object-fit:contain }
   .for-you-streaming a[aria-label="Listen on Apple Music"] img { transform:scale(1.3) }
   .for-you-streaming a[aria-label="Listen on SoundCloud"] img { transform:scale(1.15) }
+  .for-you-streaming a[aria-label="Listen on Bandcamp"] { width:68px; height:44px }
   .for-you-streaming a:hover { transform:scale(1.12) }
   .for-you-streaming a:focus-visible { outline:2px solid #fff; outline-offset:4px }
   .events-page { position:fixed; z-index:6; top:50%; left:clamp(24px,7vw,96px); width:min(360px,32vw); color:#fff; opacity:0; pointer-events:none; transform:translateY(calc(-50% + 14px)); transition:opacity .6s ease,transform .6s ease }
@@ -350,6 +355,8 @@ document.querySelectorAll('#home-page-audio, #home-page-audio-secondary').forEac
   <source src="interface-click-2x-faded.mp3" type="audio/mpeg" />
 </audio>
 <div class="for-you-page-background" aria-hidden="true"></div>
+<h2 class="for-you-title">For You</h2>
+<p class="for-you-subtitle">W/ levi &amp; N33T</p>
 <div class="model-copy-stage">
 <canvas id="scene" aria-hidden="true"></canvas>
 <main class="copy"><h1>Doda</h1>
@@ -367,6 +374,7 @@ document.querySelectorAll('#home-page-audio, #home-page-audio-secondary').forEac
   <a href="https://open.spotify.com/artist/22uK3GrfLaqObCezHSJgoH?si=tV_A8ONISjKCm5PLIT5gDA" target="_blank" rel="noopener noreferrer" aria-label="Listen on Spotify" title="Spotify"><img src="spotify-logo-white.png" alt="" /></a>
   <a href="https://music.apple.com/au/artist/doda/1555371971" target="_blank" rel="noopener noreferrer" aria-label="Listen on Apple Music" title="Apple Music"><img src="apple-music-logo-white.png" alt="" /></a>
   <a href="https://soundcloud.com/dodado1" target="_blank" rel="noopener noreferrer" aria-label="Listen on SoundCloud" title="SoundCloud"><img src="soundcloud-logo-white.webp" alt="" /></a>
+  <a href="https://doda1.bandcamp.com/track/for-you-w-n33t-levi" target="_blank" rel="noopener noreferrer" aria-label="Listen on Bandcamp" title="Bandcamp"><img src="bandcamp-logo-white.png" alt="" /></a>
 </nav>
 <img class="for-you-artwork" src="for-you-song-artwork.png" alt="For You song artwork" />
 <div class="brand-logo" role="img" aria-label="Doda logo">
