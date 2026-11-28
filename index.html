@@ -50,10 +50,12 @@
   body::after { content:""; position:fixed; inset:0; z-index:1; background:#fff; opacity:0; transition:opacity .9s ease; pointer-events:none }
   body.white-screen::after { opacity:1 }
   body.socials-screen::after { opacity:1; background:#000 }
+  body.work-screen::after { opacity:1; background:#fff }
   body.events-screen::after { opacity:1; background:#000 }
   body.releases-screen::after { opacity:1; background:#fff }
   body.sidequest-guestform-screen::after { opacity:1; background:#fff }
   body.socials-screen .copy,
+  body.work-screen .copy,
   body.events-screen .copy,
   body.releases-screen .copy,
   body.sidequest-guestform-screen .copy { opacity:0 }
@@ -79,6 +81,58 @@
   body.sidequest-guestform-screen .brand-logo { pointer-events:none; cursor:default }
   body.socials-screen .brand-logo .logo-light,
   body.socials-screen .brand-logo:hover .logo-light { opacity:1 }
+  body.work-screen .brand-logo { mix-blend-mode:difference }
+  body.work-screen .brand-logo .logo-light,
+  body.work-screen .brand-logo:hover .logo-light { opacity:1; mix-blend-mode:normal }
+  body.work-screen .brand-logo .logo-dark,
+  body.work-screen .brand-logo:hover .logo-dark { opacity:0 }
+  body.work-screen #scene { filter:invert(1) }
+  body.work-info-screen #scene { filter:invert(1) blur(20px) }
+  body.work-orders-screen #scene,body.work-tos-screen #scene,body.work-portfolio-screen #scene { filter:invert(1) blur(20px) }
+  body.work-info-screen .work-header,body.work-tos-screen .work-header,body.work-portfolio-screen .work-header,body.work-orders-screen .work-header { opacity:.52; visibility:visible; pointer-events:none; filter:blur(8px) }
+  body.work-info-screen .work-header *,body.work-tos-screen .work-header *,body.work-portfolio-screen .work-header *,body.work-orders-screen .work-header * { pointer-events:none }
+  .work-panel-back { display:none }
+  .work-info-page,.work-tos-page,.work-portfolio-page,.work-orders-page { position:fixed; z-index:12; top:50%; left:50%; width:min(980px,90vw); height:min(88vh,900px); overflow:auto; padding:clamp(22px,4vw,48px); border:1px solid rgba(17,17,17,.16); border-radius:20px; background:rgba(255,255,255,.96); color:#111; box-shadow:0 18px 60px rgba(0,0,0,.18); opacity:0; visibility:hidden; pointer-events:none; transform:translate(-50%,calc(-50% + 12px)); transition:opacity .35s ease,transform .35s ease,visibility .35s ease }
+  .work-orders-page { height:auto; max-height:min(88vh,900px) }
+  body.work-info-screen .work-info-page,body.work-tos-screen .work-tos-page,body.work-portfolio-screen .work-portfolio-page,body.work-orders-screen .work-orders-page { opacity:1; visibility:visible; pointer-events:auto; transform:translate(-50%,-50%) }
+  .work-orders-page h1 { position:static; max-width:none; margin:0 0 24px; font-size:clamp(2rem,5vw,3.5rem); line-height:1; letter-spacing:-.06em }
+  .orders-form { display:grid; gap:18px }
+  .orders-form > label,.orders-form .orders-section > label { display:grid; gap:7px; color:#333; font-size:15px; text-align:left }
+  .orders-form input[type="text"],.orders-form input[type="email"],.orders-form input[type="url"],.orders-form select,.orders-form textarea { width:100%; padding:12px 14px; border:1px solid rgba(17,17,17,.28); border-radius:10px; background:#fff; color:#111; font:inherit }
+  .orders-form input:focus-visible,.orders-form select:focus-visible,.orders-form textarea:focus-visible { outline:2px solid #111; outline-offset:3px }
+  .orders-form fieldset { display:grid; gap:10px; margin:0; padding:16px; border:1px solid rgba(17,17,17,.22); border-radius:12px }
+  .orders-form legend { padding:0 6px; font-weight:600 }
+  .orders-form fieldset label { display:flex; align-items:center; gap:9px; color:#222; font-size:14px }
+  .orders-form input[type="radio"] { width:16px; height:16px; margin:0; accent-color:#111 }
+  .orders-form .orders-section { display:grid; gap:16px; padding-top:18px; border-top:1px solid rgba(17,17,17,.12) }
+  .orders-form .orders-section[hidden] { display:none }
+  .orders-form .orders-section h2 { margin:0; font-size:1.2rem }
+  .orders-form .orders-instructions { width:100%; max-width:none; margin:0; color:#444; font-size:15px; line-height:1.5 }
+  .orders-form button[type="submit"] { justify-self:center; margin-top:4px; padding:12px 25px; border:1px solid #111; border-radius:10px; background:#111; color:#fff; font:inherit; cursor:pointer }
+  .orders-form-status { width:100%; max-width:none; min-height:1.4em; justify-self:stretch; margin:0; color:#333; text-align:center }
+  .work-portfolio-page { width:min(560px,88vw); height:auto; min-height:220px; display:grid; align-content:center; justify-items:center; gap:24px; text-align:center }
+  .work-portfolio-page h1 { margin:0; font-size:clamp(2rem,5vw,3.5rem); line-height:1; letter-spacing:-.06em }
+  .work-portfolio-spotify { width:68px; height:68px; display:grid; place-items:center; padding:12px; border-radius:18px; background:#111; transition:transform .2s ease }
+  .work-portfolio-spotify img { width:100%; height:100%; object-fit:contain }
+  .work-portfolio-spotify:hover { transform:scale(1.08) }
+  .work-info-page h1,.work-tos-page h1 { position:static; max-width:none; margin:0 0 24px; font-size:clamp(2rem,5vw,3.5rem); line-height:1; letter-spacing:-.06em }
+  .work-info-page h2,.work-tos-page h2 { margin:34px 0 12px; font-size:clamp(1.35rem,3vw,2rem); line-height:1.1; letter-spacing:-.04em }
+  .work-info-page h3,.work-tos-page h3 { margin:24px 0 8px; font-size:1.1rem }
+  .work-info-page p,.work-tos-page p { max-width:none; margin:0 0 10px; font-size:1rem; line-height:1.5 }
+  .work-info-page ul,.work-tos-page ul { margin:0 0 18px; padding-left:1.25em; line-height:1.55 }
+  .work-info-page li,.work-tos-page li { margin:4px 0 }
+  .work-tos-brand { width:100%; display:flex; align-items:center; justify-content:flex-start; gap:18px; margin:0 0 28px -20px; text-align:left }
+  .work-tos-brand img { width:clamp(64px,10vw,116px); aspect-ratio:1; object-fit:contain }
+  .work-tos-brand h1 { margin:0; font-size:clamp(3rem,8vw,6rem); line-height:.8 }
+  .work-header { position:fixed; z-index:9; top:50%; right:clamp(24px,5vw,72px); width:min(760px,58vw); display:grid; justify-items:end; gap:24px; color:#fff; text-align:right; opacity:0; visibility:hidden; pointer-events:none; transform:translateY(calc(-50% + 12px)); mix-blend-mode:difference; transition:opacity .35s ease,transform .35s ease,filter .35s ease,visibility .35s ease }
+  body.work-screen .work-header { opacity:1; visibility:visible; pointer-events:auto; transform:translateY(-50%) }
+  .work-brandline { display:flex; align-items:center; justify-content:flex-end; gap:20px }
+  .work-brandline img { display:block; width:clamp(70px,11vw,132px); height:auto; object-fit:contain; filter:invert(1) }
+  .work-brandline h2 { margin:0; color:#fff; font-size:clamp(4rem,10vw,8rem); line-height:.78; letter-spacing:-.085em }
+  .work-tagline { margin:0; max-width:none; color:#fff; font-size:clamp(15px,2.35vw,30px); line-height:1.2; letter-spacing:-.025em; white-space:nowrap }
+  .work-nav { display:flex; flex-direction:column; align-items:flex-end; gap:10px }
+  .work-nav button,.work-nav a { position:relative; z-index:1; display:block; width:clamp(150px,48vw,180px); box-sizing:border-box; padding:10px 16px; border:1px solid rgba(255,255,255,.9); border-radius:999px; background:transparent; color:#fff; text-align:center; font:inherit; cursor:pointer; text-decoration:none; pointer-events:auto; transition:background .2s ease,color .2s ease }
+  .work-nav button:hover,.work-nav a:hover { background:#fff; color:#fff }
   body.socials-screen .brand-logo .logo-dark,
   body.socials-screen .brand-logo:hover .logo-dark,
   body.events-screen .brand-logo .logo-dark,
@@ -114,7 +168,7 @@
   .guest-list-type input { width:16px; height:16px; margin:0; accent-color:#111 }
   .guest-signup-form button { justify-self:center; margin-top:5px; padding:12px 25px; border:1px solid #111; border-radius:10px; background:#111; color:#fff; font:inherit; cursor:pointer }
   .guest-signup-form button:hover { background:#333 }
-  .guest-signup-status { min-height:1.4em; margin:0; color:#333; text-align:center }
+  .guest-signup-status { width:100%; max-width:none; min-height:1.4em; justify-self:stretch; margin:0; color:#333; text-align:center }
   .guestform-thanks { position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:24px; background:rgba(0,0,0,.38); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); text-align:center }
   .guestform-thanks[hidden] { display:none }
   .guestform-thanks-card { width:min(520px,100%); display:grid; justify-items:center; gap:18px; padding:clamp(26px,5vw,44px); border:1px solid rgba(17,17,17,.16); border-radius:20px; background:rgba(255,255,255,.96); box-shadow:0 20px 60px rgba(0,0,0,.2) }
@@ -301,6 +355,19 @@
     .sidequest-guestform-page { width:94vw; max-height:84dvh; padding:4px }
     .guestform-lock-card,.guestform-unlocked-content { gap:16px; padding:22px 18px }
     .guestform-lock-card h1,.guestform-unlocked-content h1 { font-size:clamp(1.8rem,8vw,2.7rem) }
+    .work-header { top:50%; right:6vw; width:88vw; gap:18px; transform:translateY(-50%) }
+    body.work-screen .work-header { transform:translateY(-50%) }
+    .work-brandline { gap:12px }
+    .work-brandline img { width:clamp(60px,18vw,90px) }
+    .work-brandline h2 { font-size:clamp(3.5rem,17vw,6rem) }
+    .work-tagline { max-width:100%; white-space:normal; font-size:clamp(14px,4vw,19px) }
+    .work-nav { gap:8px }
+    .work-nav button { padding:9px 12px; font-size:14px }
+    .work-info-page,.work-tos-page { width:94vw; height:88dvh; padding:22px 18px }
+    .work-orders-page { width:94vw; height:auto; max-height:88dvh; padding:22px 18px }
+    .work-portfolio-page { width:88vw; min-height:200px; padding:24px }
+    .work-tos-brand { gap:12px; margin-bottom:22px }
+    .work-panel-back { position:absolute; z-index:2; top:12px; right:12px; display:block; padding:9px 15px; border:1px solid rgba(17,17,17,.22); border-radius:999px; background:rgba(255,255,255,.9); color:#111; font:inherit; font-size:15px; line-height:1.2; cursor:pointer }
   }
   @media(max-height:520px) and (max-width:900px) {
     .releases-page,.sidequest-guestform-page { max-height:92vh }
@@ -357,6 +424,120 @@ document.querySelectorAll('#home-page-audio, #home-page-audio-secondary').forEac
 <div class="for-you-page-background" aria-hidden="true"></div>
 <h2 class="for-you-title">For You</h2>
 <p class="for-you-subtitle">W/ levi &amp; N33T</p>
+<section class="work-header" aria-label="Doda Work">
+  <div class="work-brandline"><img src="logo-black.png" alt="" /><h2>Doda</h2></div>
+  <p class="work-tagline">Music Mixing, Mastering, Dolby Atmos, Song Production</p>
+  <nav class="work-nav" aria-label="Work links">
+    <button class="work-info-button" type="button">Info</button>
+    <button class="work-portfolio-button" type="button">Portfolio</button>
+    <button class="work-tos-button" type="button">TOS</button>
+    <a href="mailto:mgmt@dodamusic.com">Contact</a>
+    <button class="work-orders-button" type="button">Orders</button>
+  </nav>
+</section>
+<section class="work-info-page" aria-label="Service information" aria-hidden="true">
+  <button class="work-panel-back" type="button" aria-label="Close tab">← Back</button>
+  <h1>Details of Available Services</h1>
+  <p><strong>All prices in USD.</strong></p>
+  <h2>Song Mastering — $150</h2>
+  <ul><li>Hybrid analogue and digital mastering chain</li><li>Final master delivered in 48 kHz, 32-bit WAV</li><li>Lead time up to 1 week</li></ul>
+  <h2>Song Mixing — $300</h2>
+  <ul><li>Full mix using a hybrid analogue and digital chain</li><li>Any stems accepted, including vocals and instruments</li><li>Lead time up to 1 week</li></ul>
+  <h2>Mix &amp; Master Bundle — $350</h2>
+  <ul><li>Complete mix and master with full deliverables</li><li>Ideal for release-ready tracks</li><li>Lead time up to 1 week</li></ul>
+  <h2>Atmos Mixing &amp; Master — Coming Soon</h2>
+  <ul><li>Dolby Atmos workflow with spatial mixing suite</li><li>Multi-format exports: ADM, stereo fold-down, and binaural</li></ul>
+  <h1>Commission Requirements</h1>
+  <h2>Mastering Commissions</h2>
+  <ul><li>Rendered mixdown or mixed stems; 48 kHz, 32-bit WAV preferred</li><li>Email address and contact information</li><li>Reference tracks</li><li>Requested deliverables; default is 48 kHz, 32-bit WAV</li></ul>
+  <h2>Mixing Commissions</h2>
+  <ul><li>Full rendered stems; 48 kHz, 32-bit WAV preferred</li><li>Email address and contact information</li><li>Reference tracks</li><li>Requested deliverables; default is 48 kHz, 32-bit WAV</li></ul>
+  <h2>Mixing &amp; Mastering Commissions</h2>
+  <ul><li>Full rendered stems; 48 kHz, 32-bit WAV preferred</li><li>Email address and contact information</li><li>Reference tracks</li><li>Requested deliverables; default is 48 kHz, 32-bit WAV</li></ul>
+  <h2>Dolby Atmos Mix &amp; Master</h2>
+  <ul><li>Fully rendered stems, including dry versions of vocals and tracks with reverb; 48 kHz, 32-bit WAV preferred</li><li>Email address and contact information</li><li>Reference tracks</li><li>Requested deliverables; default is 48 kHz, 32-bit WAV</li></ul>
+  <h1>Equipment</h1>
+  <h2>Mixing &amp; Mastering Equipment</h2>
+  <ul><li>Monitoring: Genelec 8040B ×2 + Genelec 7050C</li><li>Calibration: Sonarworks</li><li>Headphones: DT 1990 Pro</li><li>Conversion: Universal Audio Apollo x6, Apollo 8, Apollo Twin X</li><li>Mastering compression: Elysia Xpressor</li><li>Mastering saturator: Singular Audio Tubedrve</li><li>Bus compressor: Warm Audio BUS-COMP</li><li>Microphone preamp: Warm Audio WA73</li></ul>
+  <h2>Mixing &amp; Mastering Software</h2>
+  <ul><li>DAW: Ableton Live 12</li><li>iZotope RX 11</li><li>FabFilter Plugin Suite</li><li>oeksound Spiff, Soothe, Bloom</li><li>Cradle: The God Particle, The Spirit</li><li>Sonnox: Oxford Inflator, Oxford Dynamics, Oxford Envolution, Oxford Repair Bundle</li><li>Soundtoys Plugin Suite</li><li>Goodhertz Plugin Suite</li><li>Kilohearts Plugin Suite</li><li>Sonible Plugin Suite</li><li>Celemony Melodyne</li><li>Dolby Atmos Renderer</li></ul>
+</section>
+<section class="work-tos-page" aria-label="Terms of Service" aria-hidden="true">
+  <button class="work-panel-back" type="button" aria-label="Close tab">← Back</button>
+  <header class="work-tos-brand"><img src="logo-black.png" alt="" /><h1>Doda</h1></header>
+  <h1>Terms of Service</h1>
+  <p><strong>Effective Date: 22/07/2025</strong><br /><strong>Last Updated: 22/07/2025</strong></p>
+  <h2>1. Services Offered</h2>
+  <p>We provide professional audio post-production services, including:</p>
+  <ul><li>Music Mixing</li><li>Music Mastering</li><li>Music Mixing + Mastering</li><li>Dolby Atmos Mixing + Mastering</li></ul>
+  <p>All services are delivered digitally and customized to each client’s creative needs and technical requirements.</p>
+  <h2>2. Payment Terms</h2>
+  <ul><li>Full payment must be made before work begins, unless otherwise agreed in writing (for example, Gumroad 50% deposits).</li><li>Prices are listed in USD and may vary based on project scope.</li><li>Payments are accepted through PayPal. Alternative arrangements can be discussed.</li><li>All sales are final unless otherwise stated.</li></ul>
+  <h2>3. Turnaround Time</h2>
+  <ul><li>Typical delivery is within 7 business days after receiving all necessary files and payment.</li><li>Rush services may be available for an additional fee.</li><li>We are not responsible for delays caused by incomplete or incorrect client submissions.</li></ul>
+  <h2>4. Revisions</h2>
+  <ul><li>All packages include 5 rounds of minor revisions, such as volume changes and EQ tweaks.</li><li>Additional revisions may incur extra charges.</li><li>Major changes, such as replacing stems, arrangement changes, or new mixes, are considered a new project and billed accordingly.</li></ul>
+  <h2>5. File Delivery &amp; Backup</h2>
+  <ul><li>Final masters and mixdowns will be delivered in the client’s requested format. Otherwise, the default is 48 kHz, 32-bit WAV. Dolby Atmos mixes are delivered in ADM or other approved formats as discussed.</li><li>You are responsible for downloading and backing up your files upon delivery.</li><li>Deliverables will remain uploaded for at least 30 days. After that, recovery may not be possible.</li></ul>
+  <h2>6. Client Responsibilities</h2>
+  <ul><li>You agree to provide high-quality, properly labeled audio files.</li><li>You confirm that you have the legal right to use and distribute all audio submitted for mixing or mastering.</li></ul>
+  <h2>7. Intellectual Property</h2>
+  <ul><li>You retain full ownership of your original audio content.</li><li>Payment in full is required before you may distribute or monetize the final masters.</li></ul>
+  <h2>8. Cancellation &amp; Refund Policy</h2>
+  <ul><li>You may cancel a project before work begins for a full refund.</li><li>If we cannot complete your project, a partial or full refund may be issued depending on the progress made.</li></ul>
+  <h2>9. Limitation of Liability</h2>
+  <ul><li>We strive to provide high-quality professional services, but are not liable for damages resulting from use or inability to use the delivered material.</li><li>Our total liability will not exceed the amount paid for the specific service in question.</li></ul>
+  <h2>10. Changes to These Terms</h2>
+  <p>We reserve the right to modify these Terms at any time. Updates will be posted on this page with the effective date. Continued use of the Services after changes constitutes acceptance.</p>
+  <h2>11. Contact</h2>
+  <p>For questions or concerns, contact:</p>
+  <p><strong>Doda</strong><br /><strong>Email: mgmt@dodamusic.com</strong></p>
+</section>
+<section class="work-portfolio-page" aria-label="Portfolio" aria-hidden="true">
+  <button class="work-panel-back" type="button" aria-label="Close tab">← Back</button>
+  <h1>Portfolio</h1>
+  <a class="work-portfolio-spotify" href="https://open.spotify.com/playlist/4mXnr7Oibv2f8Y1Cy7tRvb?si=00354e355f1a485d" target="_blank" rel="noopener noreferrer" aria-label="Open portfolio playlist on Spotify" title="Spotify"><img src="spotify-logo-white.png" alt="" /></a>
+</section>
+<section class="work-orders-page" aria-label="Commission order form" aria-hidden="true">
+  <button class="work-panel-back" type="button" aria-label="Close tab">← Back</button>
+  <h1>Commission Form</h1>
+  <form class="orders-form" id="orders-form" novalidate>
+    <label>Email address *<input type="email" name="email" autocomplete="email" required /></label>
+    <fieldset><legend>Preferred Method of contact *</legend>
+      <label><input type="radio" name="contactMethod" value="Discord" required />Discord</label>
+      <label><input type="radio" name="contactMethod" value="Twitter" />Twitter</label>
+      <label><input type="radio" name="contactMethod" value="Email" />Email</label>
+    </fieldset>
+    <label>Username / Address for chosen Method *<input type="text" name="contactAddress" required /></label>
+    <fieldset><legend>Commission Type *</legend>
+      <label><input type="radio" name="commissionType" value="Song Mastering" required />Song Mastering</label>
+      <label><input type="radio" name="commissionType" value="Album / EP Mastering" />Album / EP Mastering</label>
+      <label><input type="radio" name="commissionType" value="Mixing + Mastering" />Mixing + Mastering</label>
+    </fieldset>
+    <section class="orders-section" data-commission-section="Song Mastering" hidden>
+      <h2>File Submission — Song Mastering</h2>
+      <p class="orders-instructions">All tracks must be in WAV 24-bit format. Upload your files to <a href="https://wetransfer.com/" target="_blank" rel="noopener noreferrer">WeTransfer</a>, then paste the download link below.</p>
+      <label>Download Link *<input type="text" name="songDownloadLink" /></label>
+      <label>Short description of the mastering required (e.g. loud, distorted, clean) *<input type="text" name="songMasteringDescription" /></label>
+    </section>
+    <section class="orders-section" data-commission-section="Album / EP Mastering" hidden>
+      <h2>File Submission — Album / EP Mastering</h2>
+      <p class="orders-instructions">All tracks must be in WAV 24-bit format. Upload your files to <a href="https://wetransfer.com/" target="_blank" rel="noopener noreferrer">WeTransfer</a>, then paste the download link below.</p>
+      <label>Download Link *<input type="text" name="albumDownloadLink" /></label>
+      <label>Short description of the mastering required (e.g. loud, distorted, clean) *<input type="text" name="albumMasteringDescription" /></label>
+    </section>
+    <section class="orders-section" data-commission-section="Mixing + Mastering" hidden>
+      <h2>File Submission — Mix + Mastering</h2>
+      <p class="orders-instructions">All tracks must be in WAV 24-bit format. Upload your files to <a href="https://wetransfer.com/" target="_blank" rel="noopener noreferrer">WeTransfer</a>, then paste the download link below.</p>
+      <label>Download Link *<input type="text" name="mixMasterDownloadLink" /></label>
+      <label>Short description of the mastering required (e.g. loud, distorted, clean) *<input type="text" name="mixMasterDescription" /></label>
+    </section>
+    <input name="requestId" type="hidden" value="" />
+    <button type="submit">Submit commission</button>
+    <p class="orders-form-status" id="orders-form-status" aria-live="polite"></p>
+  </form>
+  <iframe name="orders-response-frame" title="Commission form response" style="display:none"></iframe>
+</section>
 <div class="model-copy-stage">
 <canvas id="scene" aria-hidden="true"></canvas>
 <main class="copy"><h1>Doda</h1>
@@ -366,6 +547,7 @@ document.querySelectorAll('#home-page-audio, #home-page-audio-secondary').forEac
   <button class="test-button ep-button" type="button">EP</button>
   <button class="test-button releases-button" type="button">Releases</button>
   <button class="test-button events-button" type="button">Events</button>
+  <button class="test-button work-button" type="button">Work</button>
   <button class="test-button socials-button" type="button">Links</button>
 </div>
 </main>
@@ -4363,7 +4545,7 @@ new THREE.GLTFLoader().parse(modelBuffer,'',gltf=>{
     forYouWireframeMeshes.push({surface,outline,edges,wireframe});
   }
   modelRoot.add(model);
-  if(document.body.classList.contains('for-you-screen')||document.body.classList.contains('events-screen'))setForYouWireframe(true);
+  setForYouWireframe(document.body.classList.contains('for-you-screen')||document.body.classList.contains('events-screen'));
   const bounds=new THREE.Box3().setFromObject(model);
   const center=bounds.getCenter(new THREE.Vector3());
   const size=bounds.getSize(new THREE.Vector3());
@@ -4379,7 +4561,8 @@ function modelXAtProgress(progress){
   const pixelsPerWorld=innerHeight*camera.zoom/(2*camera.position.z*Math.tan(camera.fov*Math.PI/360));
   const trackListX=Math.max(-innerWidth*0.25+200,innerWidth*0.28-3300);
   const epMobile=document.body.classList.contains('white-screen')&&innerWidth/innerHeight<.8;
-  const targetX=epMobile?innerWidth*.30:((forYouMotionActive||eventsMotionActive)?innerWidth*0.5:(socialsMotionActive?innerWidth*0.5-100:trackListX));
+  const workMobile=document.body.classList.contains('work-screen')&&innerWidth/innerHeight<.8;
+  const targetX=epMobile?innerWidth*.30:(workMobile?innerWidth*.2:((forYouMotionActive||eventsMotionActive)?innerWidth*0.5:(socialsMotionActive?innerWidth*0.5-100:trackListX)));
   const screenX=viewportModelStartX+(targetX-viewportModelStartX)*progress;
   return (screenX-innerWidth/2)/pixelsPerWorld;
 }
@@ -4397,14 +4580,15 @@ function layout(){
   renderer.setSize(w,h);camera.aspect=aspect;camera.updateProjectionMatrix();
   const mobile=aspect<.8;
   camera.position.z=mobile?13:12;
-  camera.zoom=8.1*(1+(socialsMotionActive?2.2:(eventsMotionActive?0.8:(forYouMotionActive?0:0.6)))*leftProgress);
+  const workMobile=innerWidth/innerHeight<.8&&document.body.classList.contains('work-screen');
+  camera.zoom=8.1*(1+((workMobile?0.7:(socialsMotionActive?2.2:(eventsMotionActive?0.8:(forYouMotionActive?0:0.6)))))*leftProgress);
   camera.updateProjectionMatrix();
   viewportModelStartX=w*0.70;
   const basePixelsPerWorld=h*8.1/(2*camera.position.z*Math.tan(camera.fov*Math.PI/360));
   groupBaseX=(viewportModelStartX-w/2)/basePixelsPerWorld;
   group.position.set(modelXAtProgress(leftProgress),modelYForCurrentPage(mobile),0);
   const epMobile=document.body.classList.contains('white-screen')&&mobile;
-  group.scale.setScalar((epMobile?0.58:(mobile ? 0.9 : 1.0))*(forYouMotionActive ? 1-0.5515*leftProgress : (eventsMotionActive ? 1+0.12*leftProgress : 1)));
+  group.scale.setScalar((epMobile?0.58:(document.body.classList.contains('work-screen')&&mobile?0.56:(mobile ? 0.9 : 1.0)))*(forYouMotionActive ? 1-0.5515*leftProgress : (eventsMotionActive ? 1+0.12*leftProgress : 1)));
 }
 addEventListener('resize',layout);layout();
 function frame(){
@@ -4415,7 +4599,7 @@ function frame(){
     const sampleX=rect.left+rect.width/2, sampleY=rect.top+rect.height/2;
     muteModelRaycaster.setFromCamera(new THREE.Vector2(sampleX/innerWidth*2-1,1-sampleY/innerHeight*2),camera);
     const modelUnderMute=muteModelRaycaster.intersectObject(modelRoot,true).some(hit=>hit.object.isMesh&&hit.object.visible);
-    const modelIsLight=!document.body.classList.contains('socials-screen')&&!document.body.classList.contains('releases-screen');
+    const modelIsLight=!document.body.classList.contains('socials-screen')&&!document.body.classList.contains('work-screen')&&!document.body.classList.contains('releases-screen');
     siteAudioToggle.classList.toggle('model-behind-light',modelUnderMute&&modelIsLight);
   }
   const frostTarget=document.body.classList.contains('white-screen')&&document.body.classList.contains('song-hover')?1:0;
@@ -4560,7 +4744,6 @@ document.querySelector('.home-for-you-button').addEventListener('click',()=>{
   socialsMotionActive=false;
   forYouMotionActive=true;
   document.body.classList.add('for-you-screen');
-  setForYouWireframe(true);
   requestAnimationFrame(waitForForYouModel);
   leftStartProgress=leftProgress;
   leftElapsed=0;
@@ -4727,11 +4910,118 @@ document.querySelector('.socials-button').addEventListener('click',()=>{
   leftTarget=1;
   if(paused){leftProgress=1;camera.zoom=8.1*3.2;camera.updateProjectionMatrix();group.position.set(modelXAtProgress(leftProgress),modelYForCurrentPage(innerWidth/innerHeight<.8),0);}
 });
+document.querySelector('.work-button').addEventListener('click',()=>{
+  socialsMotionActive=true;
+  document.body.classList.add('work-screen');
+  setForYouWireframe(false);
+  leftStartProgress=leftProgress;
+  leftElapsed=0;
+  leftTarget=1;
+  if(paused){leftProgress=1;camera.zoom=8.1*3.2;camera.updateProjectionMatrix();group.position.set(modelXAtProgress(leftProgress),modelYForCurrentPage(innerWidth/innerHeight<.8),0);}
+});
+const workInfoPage=document.querySelector('.work-info-page');
+const workTosPage=document.querySelector('.work-tos-page');
+const workPortfolioPage=document.querySelector('.work-portfolio-page');
+const workOrdersPage=document.querySelector('.work-orders-page');
+document.querySelector('.work-info-button').addEventListener('click',event=>{
+  event.stopPropagation();
+  document.body.classList.add('work-info-screen');
+  workInfoPage.setAttribute('aria-hidden','false');
+});
+function closeWorkPanel(){
+  document.body.classList.remove('work-info-screen','work-tos-screen','work-portfolio-screen','work-orders-screen');
+  workInfoPage.setAttribute('aria-hidden','true');
+  workTosPage.setAttribute('aria-hidden','true');
+  workPortfolioPage.setAttribute('aria-hidden','true');
+  workOrdersPage.setAttribute('aria-hidden','true');
+}
+document.querySelectorAll('.work-panel-back').forEach(button=>button.addEventListener('click',event=>{
+  event.stopPropagation();
+  closeWorkPanel();
+}));
+document.addEventListener('pointerdown',event=>{
+  if((!document.body.classList.contains('work-info-screen')&&!document.body.classList.contains('work-tos-screen')&&!document.body.classList.contains('work-portfolio-screen')&&!document.body.classList.contains('work-orders-screen'))||event.target.closest('.work-info-page,.work-tos-page,.work-portfolio-page,.work-orders-page'))return;
+  closeWorkPanel();
+},true);
+document.addEventListener('keydown',event=>{if(event.key==='Escape')closeWorkPanel();});
+document.querySelector('.work-tos-button').addEventListener('click',event=>{
+  event.stopPropagation();
+  document.body.classList.add('work-tos-screen');
+  workTosPage.setAttribute('aria-hidden','false');
+});
+document.querySelector('.work-portfolio-button').addEventListener('click',event=>{
+  event.stopPropagation();
+  document.body.classList.add('work-portfolio-screen');
+  workPortfolioPage.setAttribute('aria-hidden','false');
+});
+document.querySelector('.work-orders-button').addEventListener('click',event=>{
+  event.stopPropagation();
+  document.body.classList.add('work-orders-screen');
+  workOrdersPage.setAttribute('aria-hidden','false');
+});
+const ordersForm=document.querySelector('#orders-form');
+const ordersFormStatus=document.querySelector('#orders-form-status');
+const ordersSubmissionEndpoint='https://script.google.com/macros/s/AKfycby0P-cjfnx9Mqf3ROzeloFRJ9DfCUtILLeGyQPjjMr5nTjArC8cs0B5ME6zl4b3Gn8DOg/exec';
+const orderCommissionInputs=ordersForm.querySelectorAll('input[name="commissionType"]');
+const orderCommissionSections=ordersForm.querySelectorAll('[data-commission-section]');
+function syncOrderCommissionSections(){
+  const selected=ordersForm.querySelector('input[name="commissionType"]:checked')?.value||'';
+  orderCommissionSections.forEach(section=>{
+    const active=section.dataset.commissionSection===selected;
+    section.hidden=!active;
+    section.querySelectorAll('input').forEach(input=>{input.disabled=!active;input.required=active;});
+  });
+}
+orderCommissionInputs.forEach(input=>input.addEventListener('change',syncOrderCommissionSections));
+syncOrderCommissionSections();
+ordersForm.addEventListener('submit',event=>{
+  event.preventDefault();
+  if(!ordersForm.checkValidity()){
+    ordersForm.reportValidity();
+    return;
+  }
+  if(!ordersSubmissionEndpoint){
+    ordersFormStatus.textContent='The spreadsheet connection is not deployed yet.';
+    return;
+  }
+  const submitButton=ordersForm.querySelector('button[type="submit"]');
+  submitButton.disabled=true;
+  ordersFormStatus.textContent='Sending…';
+  ordersForm.action=ordersSubmissionEndpoint;
+  ordersForm.method='post';
+  ordersForm.target='orders-response-frame';
+  const requestIdField=ordersForm.querySelector('[name="requestId"]');
+  const requestId=window.crypto?.randomUUID?.()||`${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  requestIdField.value=requestId;
+  let responseTimedOut=false;
+  const responseTimeout=setTimeout(()=>{
+    responseTimedOut=true;
+    window.removeEventListener('message',receiveOrderResult);
+    submitButton.disabled=false;
+    ordersFormStatus.textContent='No confirmation came back from the spreadsheet. Please try again.';
+  },15000);
+  const receiveOrderResult=event=>{
+    if(event.data?.type!=='doda-orders-result'||event.data?.requestId!==requestId)return;
+    clearTimeout(responseTimeout);
+    window.removeEventListener('message',receiveOrderResult);
+    if(responseTimedOut)return;
+    submitButton.disabled=false;
+    if(event.data.ok){
+      ordersForm.reset();
+      syncOrderCommissionSections();
+      ordersFormStatus.textContent='Thanks for submitting! Your commission request has been received.';
+    }else{
+      ordersFormStatus.textContent=event.data.message||'Could not save your request. Please check the fields and try again.';
+    }
+  };
+  window.addEventListener('message',receiveOrderResult);
+  HTMLFormElement.prototype.submit.call(ordersForm);
+});
 document.querySelector('.brand-logo').addEventListener('click',event=>{
   if(document.body.classList.contains('sidequest-guestform-screen'))return;
-  if(document.body.classList.contains('white-screen')||document.body.classList.contains('socials-screen')||document.body.classList.contains('for-you-screen')||document.body.classList.contains('events-screen')||document.body.classList.contains('releases-screen')||document.body.classList.contains('sidequest-guestform-screen')){
+  if(document.body.classList.contains('white-screen')||document.body.classList.contains('socials-screen')||document.body.classList.contains('work-screen')||document.body.classList.contains('for-you-screen')||document.body.classList.contains('events-screen')||document.body.classList.contains('releases-screen')||document.body.classList.contains('sidequest-guestform-screen')){
     setHomeAudioCreditsMode(false);
-    socialsMotionActive=document.body.classList.contains('socials-screen');
+    socialsMotionActive=document.body.classList.contains('socials-screen')||document.body.classList.contains('work-screen');
     forYouMotionActive=document.body.classList.contains('for-you-screen');
     eventsMotionActive=document.body.classList.contains('events-screen');
     if(document.body.classList.contains('white-screen')){
@@ -4747,6 +5037,15 @@ document.querySelector('.brand-logo').addEventListener('click',event=>{
     }
     document.body.classList.remove('white-screen');
     document.body.classList.remove('socials-screen');
+    document.body.classList.remove('work-screen');
+    document.body.classList.remove('work-info-screen');
+    workInfoPage.setAttribute('aria-hidden','true');
+    document.body.classList.remove('work-tos-screen');
+    workTosPage.setAttribute('aria-hidden','true');
+    document.body.classList.remove('work-portfolio-screen');
+    workPortfolioPage.setAttribute('aria-hidden','true');
+    document.body.classList.remove('work-orders-screen');
+    workOrdersPage.setAttribute('aria-hidden','true');
     collapseEventDetails();
     document.body.classList.remove('events-screen');
     collapseReleaseCards();
@@ -4978,6 +5277,7 @@ const homeRoutes={
   releases:'.releases-button',
   events:'.events-button',
   links:'.socials-button',
+  work:'.work-button',
   sidequest_guestform:'.sidequest-guestform-route'
 };
 const pageHashButtons=Object.fromEntries(Object.entries(homeRoutes).map(([key,selector])=>[key,document.querySelector(selector)]));
@@ -4987,6 +5287,7 @@ function activeHomeRoute(){
   if(document.body.classList.contains('releases-screen'))return 'releases';
   if(document.body.classList.contains('events-screen'))return 'events';
   if(document.body.classList.contains('socials-screen'))return 'links';
+  if(document.body.classList.contains('work-screen'))return 'work';
   if(document.body.classList.contains('sidequest-guestform-screen'))return 'sidequest_guestform';
   return '';
 }
@@ -5049,7 +5350,7 @@ function applyHomePageAudioMix(){
   homePageAudioDecks.forEach((audio,index)=>audio.volume=homePageAudioMasterVolume*homePageAudioMix[index]);
 }
 function isMainHomeScreen(){
-  return !['white-screen','socials-screen','for-you-screen','events-screen','sidequest-guestform-screen','demo-locked'].some(screen=>document.body.classList.contains(screen));
+  return !['white-screen','socials-screen','work-screen','for-you-screen','events-screen','sidequest-guestform-screen','demo-locked'].some(screen=>document.body.classList.contains(screen));
 }
 const homeControlSections=[document.querySelector('.home-intro-row'),document.querySelector('.home-actions')];
 function syncHomeControlAvailability(){
